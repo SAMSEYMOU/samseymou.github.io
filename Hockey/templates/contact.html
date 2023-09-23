@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Sidebar Menu</title>
+    
+   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+      .header {
+    background-color: #484860;
+    padding: 5px;
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.5); /* White shadow */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+      height: 70px;
+    
+}
+  .header-logo {
+    width: 75px; /* Adjust the desired width */
+    height: 66px; /* Adjust the desired height */
+    margin-right: 5px; /* Adjust the margin to create space between logo and title */
+}
+
+.header-title {
+    font-size: 20px;
+    color: #DBDDE0;
+    margin-left: 10px; /* Add margin to the left to separate it from the logo */
+}
+    .account-info {
+         display: flex;
+         align-items: center;
+         position: absolute;
+         top: 6px;
+         right: 1px;
+         color: #1A1A1B;
+     }
+
+         .profile-picture {
+             width: 40px;
+             height: 40px;
+             border-radius: 50%;
+             margin-right: 20px;
+         }
+
+         .person-name {
+            
+             font-size: 16px;
+             
+             color: #DBDDE0;
+             
+             
+         }
+
+
+        .menu-links img {
+            width: 45px;
+            height: 40px;
+            margin-right: 20px;
+        }
+
+      .toggle {
+    position: absolute;
+    top: 12%;
+    right: -12px; /* Adjust this value based on your design preference */
+    transform: translateY(-50%) rotate(180deg);
+    height: 25px;
+    width: 25px;
+    background-color: #83A7E5;
+    color: var(--sidebar-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    transition: var(--tran-05);
+}
+
+
+.sidebar.close .toggle {
+    transform: translateY(-50%) rotate(0deg);
+}
+    
+
+/* Google Font Import - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+/* Dark mode color scheme */
+:root {
+    --body-color: #EAEAEF; /* Dark background color */
+    --sidebar-color: #2C2C3B; /* Slightly lighter sidebar background */
+    --primary-color: #71829E; /* Dark blue primary color */
+    --primary-color-light: #71829E; /* Lighter blue for highlights */
+    --toggle-color: #A08383; /* White text color for toggle */
+    --text-color: #ccc; /* Light gray text color */
+}
+
+
+body{
+    min-height: 100vh;
+    background-color: var(--body-color);
+    transition: var(--tran-05);
+}
+
+::selection{
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+/* ===== Sidebar ===== */
+.sidebar {
+    position: fixed;
+    top: 45px;
+    left: 0;
+    height: 100%;
+    width: 270px;
+    padding: 10px 14px;
+    background: var(--sidebar-color);
+    transition: var(--tran-05);
+    z-index: 100;
+    box-shadow: 4px 0px 8px rgba(0, 0, 0, 0.5); /* Vertical shadow */
+}
+
+.sidebar.close {
+    width: 88px;
+    box-shadow: 4px 0px 8px rgba(0, 0, 0, 0.5); /* Vertical shadow for closed sidebar */
+}
+/* ===== Reusable code - Here ===== */
+.sidebar li{
+    height: 50px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.sidebar header .image,
+.sidebar .icon{
+    min-width: 60px;
+    border-radius: 6px;
+}
+
+.sidebar .icon{
+    min-width: 60px;
+    border-radius: 6px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.sidebar .text,
+.sidebar .icon{
+    color: var(--text-color);
+    transition: var(--tran-03);
+}
+
+.sidebar .text {
+    font-size: 17px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+
+.sidebar header{
+    position: relative;
+}
+
+.sidebar header .image-text{
+    display: flex;
+    align-items: center;
+}
+.sidebar header .logo-text{
+    display: flex;
+    flex-direction: column;
+}
+header .image-text .name {
+    margin-top: 2px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+
+header .image-text .profession{
+    font-size: 16px;
+    margin-top: -2px;
+    display: block;
+}
+
+.sidebar header .image{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar header .image img{
+    width: 70px;
+    border-radius: 6px;
+}
+
+.sidebar header .toggle{
+    position: absolute;
+    top: 50%;
+    right: -25px;
+    transform: translateY(-50%) rotate(180deg);
+    height: 25px;
+    width: 25px;
+    background-color: var(--primary-color);
+    color: var(--sidebar-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    transition: var(--tran-05);
+}
+
+
+.sidebar.close .toggle{
+    transform: translateY(-50%) rotate(0deg);
+}
+
+.sidebar .menu{
+    margin-top: 40px;
+}
+
+.sidebar li a{
+    list-style: none;
+    height: 100%;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: var(--tran-03);
+    
+}
+
+sidebar li a[href="/contact"] {
+    position: relative;
+    padding-top: 10px; /* Adjust the padding for spacing if necessary */
+}
+
+.sidebar li a[href="/contact"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border-top: 1.5px solid #ccc; /* You can adjust the color and thickness of the line as needed */
+}
+
+.sidebar .menu-bar{
+    height: calc(100% - 55px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: scroll;
+}
+.menu-bar::-webkit-scrollbar{
+    display: none;
+}
+.sidebar .menu-bar .mode{
+    border-radius: 6px;
+    background-color: var(--primary-color-light);
+    position: relative;
+    transition: var(--tran-05);
+}
+
+.switch::before{
+    content: '';
+    position: absolute;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    background-color: var(--sidebar-color);
+    transition: var(--tran-04);
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.aut.autocomplete-items {
+  position: absolute;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  z-index: 999;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+}
+.autocomplete-items .state-option {
+  padding: 10px;
+   font-size: 14px;
+  cursor: pointer;
+}
+
+.autocomplete-items .state-option:hover {
+  background-color: #f1f1f1;
+}
+
+.autocomplete-items .state-option.highlighted {
+  background-color: #5F93E3;
+  color: #fff;
+}
+
+
+.container {
+  width: 600px; /* Fixed width for the container */
+  max-width: 90%; /* Limit the maximum width */
+  padding: 20px;
+  background-color: #D0D2D6;
+  border-radius: 10px;
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.2); /* Add box shadow */
+  margin-left: 78px; /* Initial margin when the sidebar is open */
+  margin-top: 80px; /* Adjust the top margin to create equal space above and below */
+  transition: margin-left 0.3s; /* Add a smooth transition for margin changes */
+}
+/* Adjust the margin of the container when the sidebar is open */
+body:not(.sidebar.close) .container {
+  margin-left: 250px;
+}
+
+/* Add a class to move the container to the center when the sidebar is closed */
+.container.centered {
+  margin-left: 78px; /* Adjust the margin when the sidebar is closed */
+  width: 600px; /* Increase the width as needed */
+  max-width: 90%; /* Limit the maximum width */
+}
+
+h1 {
+  text-align: center;
+  color: #000000;
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+form {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.edit-button span,
+.delete-button span {
+  display: none;
+}
+
+.edit-button:hover span,
+.delete-button:hover span {
+  display: inline;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+input[type="text"] {
+  width: calc(100% - 20px);
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.edit-button,
+.delete-button {
+    font-size: 12px; /* Initial font size */
+    width: 35px; /* Set the width to create a square button */
+    height: 40px; /* Increase the height to accommodate the text below */
+    padding: 0; /* Remove padding to make it more square */
+    border-radius: 4px; /* Add border-radius for a slight rounded look (optional) */
+    color: #000; /* Set font color to black */
+    text-align: center; /* Center-align text */
+    display: flex; /* Use flex layout to align icon and text vertically */
+    flex-direction: column; /* Arrange icon and text in a column */
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    position: relative; /* Add relative positioning to handle text */
+}
+
+.edit-button img,
+.delete-button img {
+    width: 12px;
+    height: 12px;
+    vertical-align: middle;
+}
+
+/* New styles for the text */
+.edit-button span, 
+.delete-button span {
+    display: none; /* Initially hide the text */
+    font-size: 12px; /* Set the font size for the text */
+    margin-top: 5px; /* Adjust the spacing between icon and text */
+}
+
+
+button.edit-button {
+  background-color: #81c784;
+  color: #ffffff;
+}
+
+button.delete-button {
+  background-color: #e57373;
+  color: #ffffff;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  position: relative;
+}
+
+.edit-delete {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100%;
+}
+
+.edit-delete button {
+  margin-left: 5px;
+}
+.edit-button:hover,
+.delete-button:hover {
+    font-size: 7.8px; /* Adjust the font size on hover */
+    color: #000;
+}
+.home{
+    position: absolute;
+    top: 0;
+    top: 0;
+    left: 250px;
+    height: 100vh;
+    width: calc(100% - 250px);
+    background-color: var(--body-color);
+    transition: var(--tran-05);
+}
+.home .text{
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--text-color);
+    padding: 12px 60px;
+}
+
+.sidebar.close ~ .home{
+    left: 78px;
+    height: 100vh;
+    width: calc(100% - 78px);
+}
+    .toggle:focus {
+        outline: none;
+    }
+
+   .home{
+       position: absolute;
+       top: 0;
+       top: 0;
+       left: 250px;
+       height: 100vh;
+       width: calc(100% - 250px);
+       background-color: var(--body-color);
+       transition: var(--tran-05);
+   }
+   .home .text{
+       font-size: 30px;
+       font-weight: 500;
+       color: var(--text-color);
+       padding: 12px 60px;
+   }
+
+   .sidebar.close ~ .home{
+       left: 78px;
+       height: 100vh;
+       width: calc(100% - 78px);
+   }
+   .back-next-buttons {
+       justify-content: flex-end; /* Aligns buttons to the right */
+       justify-content: space-between; 
+       margin-top: 20px;
+       display: flex;
+       align-items: center;
+   }
+button[type="submit"] {
+    background-color: #781919;
+    color: #fff;
+    width: 100px;
+    height: 38px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+
+   .next-button {
+       /* Your existing button styles */
+       background-color: #384B70;
+       color: #fff;
+       border: none;
+       border-radius: 20px;
+       padding: 8px 8px;
+       cursor: pointer;
+       transition: background-color 0.3s, transform 0.2s;
+       text-align: center;
+       width: 90px;
+   }
+
+   .back-button{
+       /* Your existing button styles */
+       background-color: #384B70;
+       color: #fff;
+       border: none;
+       border-radius: 20px;
+       padding: 8px 8px;
+       cursor: pointer;
+       transition: background-color 0.3s, transform 0.2s;
+       text-align: center;
+           margin-right: 200px; /* Adjust this value as needed */
+           width: 90px;
+   }
+
+
+.centered {
+  margin-left: 78px; /* Adjust the margin when the sidebar is closed */
+}
+
+/* Add this style to center the container when the sidebar is open */
+body:not(.sidebar.close) .container.centered {
+  margin-left: 250px; /* Adjust the margin when the sidebar is open */
+}
+
+   }
+
+
+.settings-link {
+    text-decoration: none;
+}
+
+.settings-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    color: #DBDDE0;
+    transition: var(--tran-03);
+    margin-top: 5px;
+}
+
+.sidebar .nav-link a:hover {
+    background-color: #71829E; /* Light blue color */
+    color: #fff; /* White text color */
+     padding-left: 5px;
+}
+.sidebar .nav-link a:hover .nav-text {
+    font-weight: bold;
+    
+}
+h1 {
+  font-weight: normal; /* or font-weight: 400; for a normal font weight */
+}
+body.sidebar.close .container.centered {
+  margin-left: 78px; /* Adjust the margin when the sidebar is closed */
+}
+
+/* CSS for the container when the sidebar is open */
+body:not(.sidebar.close) .container.centered {
+  margin-left: 250px; /* Adjust the margin when the sidebar is open */
+}
+#venueForm input[type="text"] {
+  width: 100%; /* Make the input fields take up the full width */
+  padding: 15px; /* Increase the padding for better spacing */
+  margin-bottom: 20px; /* Increase the margin between input fields */
+}
+
+
+.back-button:hover
+{
+    background-color: #1F304A; /* Change the background color on hover */
+    color: #fff; /* Change text color to white for better contrast on hover */
+     padding-left: 5px;
+}
+
+.next-button:hover {
+    background-color: #1F304A; /* Change the background color on hover */
+    color: #fff; /* Change text color to white for better contrast on hover */
+     padding-right: 5px;
+}
+
+
+
+
+button[type="submit"]:hover {
+    background-color: #A91C1C; /* New background color on hover */
+    color: #fff; /* New text color on hover */
+    /* You can adjust these colors as needed */
+}
+
+        /* List Styles */
+        #divisionsList {
+            margin-top: 20px;
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #divisionsList li {
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+    /* Modern and aesthetic styling for the form */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 500px;
+      margin: 100px auto;
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(88, 88, 88, 0.5), 0 0 20px rgba(88, 88, 88, 0.5), 0 0 30px rgba(88, 88, 88, 0.5);
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+      color: #555;
+    }
+    input, textarea {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      box-sizing: border-box; /* Include padding and border in the width and height */
+    }
+    textarea {
+      resize: vertical;
+    }
+   
+
+    </style>
+</head>
+<body>
+   
+    <div class="header">
+        <img class="header-logo" src="/static/images/logo.png" alt="Logo">
+
+        <div class="header-title">Puck Planner</div>
+        <div class="account-info">
+            <img src="/static/images/profile.png" alt="Profile Picture" class="profile-picture">
+            <p class="person-name">Matt Peters</p>
+            <a href="/settings" class="settings-link">
+                <button class="settings-button"><i class="bx bx-cog"></i></button>
+            </a>
+        </div>
+    </div>
+
+    <div class="nav-content">
+        <nav class="sidebar ">
+            <div class="toggle">
+                <i class='bx bx-chevron-right'></i>
+            </div>
+            <header>
+            </header>
+
+            <div class="menu-bar">
+                <div class="menu">
+                    <ul class="menu-links">
+                        <li class="nav-link">
+                            <a href="/home">
+                                <i class='bx bx-home icon'></i>
+                                <span class="text nav-text">Home</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a href="/gamespecs">
+                                <i class='bx bx-edit icon'></i>
+                                <span class="text nav-text">Game Specs</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a href="/venues">
+                                <i class='bx bx-buildings icon'></i>
+                                <span class="text nav-text">Venues</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a href="/divisions">
+                                <i class='bx bx-git-repo-forked icon'></i>
+                                <span class="text nav-text">Divisions</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a href="/teams">
+                                <i class='bx bx-group icon'></i>
+                                <span class="text nav-text">Teams</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a href="/schedule">
+                                <i class='bx bx-calendar icon'></i>
+                                <span class="text nav-text">Schedule</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bottom-content">
+                    <li class="">
+                        <a href="/contact">
+                            <i class='bx bx-envelope icon'></i>
+                            <span class="text nav-text">Contact Us</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="/">
+                            <i class='bx bx-log-out icon'></i>
+                            <span class="text nav-text">Logout</span>
+                        </a>
+                    </li>
+                </div>
+            </div>
+        </nav>
+
+
+<title>Venue Form</title>
+</head>
+<body>
+  <div class="container">
+    <h2>Contact Us</h2>
+    <form id="contactForm" action="#" method="post">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="message">Message:</label>
+      <textarea id="message" name="message" rows="4" required></textarea>
+
+      <button type="submit" style="background-color: maroon; color: white;">Submit</button>
+
+    </form>
+  </div>
+ </div>
+    <script>
+
+    const form = document.getElementById("contactForm");
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const formData = new FormData(form);
+      const formDataObject = {};
+      formData.forEach((value, key) => {
+        formDataObject[key] = value;
+      });
+      // Optionally, you can reset the form after submission.
+      form.reset();
+    });
+const body = document.querySelector('body');
+const sidebar = document.querySelector('.sidebar');
+const toggle = document.querySelector('.toggle');
+
+toggle.addEventListener('click', () => {
+    sidebar.classList.toggle('close');
+});
+    </script>
+
+</body>
+</html>
